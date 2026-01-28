@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	if(argc < 2)
 	{
-		printf("Brak argumentow");
+		printf("Uzycie: <map> -p particle_count -i iterations -c config_file -l log_interval\n");
 		return 1;
 	}
 	FILE *f = fopen(argv[1], "r");
