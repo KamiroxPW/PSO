@@ -27,6 +27,7 @@ typedef struct Swarm
 	PSOParams params;
 } Swarm;
 
+
 Swarm* pso_init_swarm(int count, Map *map, PSOParams params);
 
 void pso_update(Swarm *swarm, Map *map);

@@ -33,20 +33,19 @@ Map* map_load(FILE *f)
 
 void map_free(Map *map)
 {
-	if(!map) return;
 	for(int i = 0; i < map->height; i++)
 		free(map->data[i]);
 	free(map->data);
 	free(map);
 }
 
-double map_get_value(const Map *map, double x, double y)
+double map_get_value(Map *map, double x, double y)
 {
 	int col = (int)round(x);
 	int row = (int)round(y);
 
 	if (col < 0 || col >= map->width || row < 0 || row >= map->height)
-		return -1000000.0;
+		return -100.0;
 
 	return map->data[row][col];
 }

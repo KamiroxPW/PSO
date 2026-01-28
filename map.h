@@ -13,6 +13,6 @@ Map* map_load(FILE *f);
 
 void map_free(Map *map);
 
-double map_get_value(const Map *map, double x, double y);
+double map_get_value(Map *map, double x, double y);
 
 #endif

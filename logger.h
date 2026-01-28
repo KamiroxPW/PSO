@@ -3,8 +3,8 @@
 
 #include "pso.h"
 
-void logger_init(const char *filename);
+void logger_check(char *name);
 
-void logger_save_iteration(const char *filename, int iteration, Swarm *swarm);
+void logger_save(const char *filename, int iteration, Swarm *swarm);
 
 #endif

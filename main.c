@@ -5,61 +5,44 @@
 #include "map.h"
 #include "pso.h"
 #include "logger.h"
-
-int load_config(FILE *f, PSOParams *params)
-{
-    if(fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2) != 3)
-    {
-        fclose(f);
-        return 0;
-    }
-    return 0;
-}
+#include "config.h"
 
 int main(int argc, char **argv)
 {
-    srand(time(NULL));
+	srand(time(NULL));
 
-    if (argc < 2)
-    {
-        printf("Uzycie: %s <plik_mapy> -p <n> -i <n> -c <config> -n <log_step>\n", argv[0]);
-        return 1;
+	if(argc < 2)
+	{
+		printf("Brak argumentow");
+		return 1;
     }
 	FILE *f = fopen(argv[1], "r");
-    int particles_count = atoi(argv[2]);
-    int iterations = atoi(argv[3]);
-    int log_step = 0;
-
-    for(int i = 2; i < argc; i++)
-    {
-        if(strcmp(argv[i], "-p") == 0 && i + 1 < argc) particles_count = atoi(argv[++i]);
-        else if(strcmp(argv[i], "-i") == 0 && i + 1 < argc) iterations = atoi(argv[++i]);
-        else if(strcmp(argv[i], "-c") == 0 && i + 1 < argc) f = fopen(argv[++i], "r");
-        else if(strcmp(argv[i], "-n") == 0 && i + 1 < argc) log_step = atoi(argv[++i]);
-    }
+    int p_count = atoi(argv[2]);
+    int iter = atoi(argv[3]);
+    FILE *p = fopen(argv[4], "w");
+    int log = atoi(argv[5]);
 
     Map *map = map_load(f);
-    if(!map) return 1;
-
     PSOParams params = {0.5, 1.0, 1.0};
-    if (f)
+    if(p)
     {
-        if (load_config(f, &params) != 0)
+        if (load_config(p, &params) != 0)
             printf("Blad wczytywania pliku konfiguracyjnego, uzywam domyslnych.\n");
     }
 
-    Swarm *swarm = pso_init_swarm(particles_count, map, params);
+    Swarm *swarm = pso_init_swarm(p_count, map, params);
     
-    if (log_step > 0) logger_init("pso_log.csv");
+    if(log > 0)
+		logger_check(argv[4]);
 
-    printf("Start symulacji: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, particles_count, iterations);
+    printf("Start symulacji: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);
 
-    for (int t = 0; t < iterations; t++)
+    for (int j = 0; j < iter; j++)
     {
         pso_update(swarm, map);
 
-        if (log_step > 0 && (t % log_step == 0))
-            logger_save_iteration("pso_log.csv", t, swarm);
+        if (log > 0 && (j % log == 0))
+            logger_save(argv[4], j, swarm);
     }
 
     printf("Znaleziony cel: (%.2f, %.2f) z wartoscia %.2f\n",swarm->gBest_x, swarm->gBest_y, swarm->gBest_val);
