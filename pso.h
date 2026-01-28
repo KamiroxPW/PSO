@@ -28,10 +28,10 @@ typedef struct Swarm
 } Swarm;
 
 
-Swarm* pso_init_swarm(int count, Map *map, PSOParams params);
+Swarm* swarm_init(int count, Map *map, PSOParams params);
 
-void pso_update(Swarm *swarm, Map *map);
+void swarm_update(Swarm *swarm, Map *map);
 
-void pso_free(Swarm *swarm);
+void swarm_free(Swarm *swarm);
 
 #endif

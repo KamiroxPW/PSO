@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -lm
-OBJ = main.o map.o pso.o logger.o rand.o config.o
+OBJ = main.o map.o pso.o logger.o utils.o
 TARGET = pso.exe
 
 all: $(TARGET)

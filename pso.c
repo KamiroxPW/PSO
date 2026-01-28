@@ -2,9 +2,9 @@
 #include <float.h>
 #include <math.h>
 #include "pso.h"
-#include "rand.h"
+#include "utils.h"
 
-Swarm* pso_init_swarm(int count, Map *map, PSOParams params)
+Swarm* swarm_init(int count, Map *map, PSOParams params)
 {
 	Swarm *swarm = malloc(sizeof(Swarm));
 	swarm->particle_count = count;
@@ -38,7 +38,7 @@ Swarm* pso_init_swarm(int count, Map *map, PSOParams params)
 	return swarm;
 }
 
-void pso_update(Swarm *swarm, Map *map)
+void swarm_update(Swarm *swarm, Map *map)
 {
 	for (int i = 0; i < swarm->particle_count; i++)
 	{
@@ -47,18 +47,14 @@ void pso_update(Swarm *swarm, Map *map)
 		double r1 = random_01();
 		double r2 = random_01();
 
-		p->vx = swarm->params.w * p->vx +
-				swarm->params.c1 * r1 * (p->pBest_x - p->x) +
-				swarm->params.c2 * r2 * (swarm->gBest_x - p->x);
+		p->vx = swarm->params.w * p->vx + swarm->params.c1 * r1 * (p->pBest_x - p->x) + swarm->params.c2 * r2 * (swarm->gBest_x - p->x);
 
-		p->vy = swarm->params.w * p->vy +
-				swarm->params.c1 * r1 * (p->pBest_y - p->y) +
-				swarm->params.c2 * r2 * (swarm->gBest_y - p->y);
+		p->vy = swarm->params.w * p->vy + swarm->params.c1 * r1 * (p->pBest_y - p->y) + swarm->params.c2 * r2 * (swarm->gBest_y - p->y);
 
 		p->x += p->vx;
 		p->y += p->vy;
 
-		double current_val = map_get_value(map, p->x, p->y);
+		double current_val = map_value(map, p->x, p->y);
 		p->fitness = current_val;
 
 		if(current_val > p->pBest_val)
@@ -77,7 +73,7 @@ void pso_update(Swarm *swarm, Map *map)
 	}
 }
 
-void pso_free(Swarm *swarm)
+void swarm_free(Swarm *swarm)
 {
 	if(swarm)
 	{

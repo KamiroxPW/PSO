@@ -7,7 +7,7 @@ Map* map_load(FILE *f)
 {
 	if(!f)
 	{
-		perror("Nie mozna otworzyc pliku mapy");
+		perror("Nie mozna otworzyc mapy");
 		return NULL;
 	}
 
@@ -39,7 +39,7 @@ void map_free(Map *map)
 	free(map);
 }
 
-double map_get_value(Map *map, double x, double y)
+double map_value(Map *map, double x, double y)
 {
 	int col = (int)round(x);
 	int row = (int)round(y);
