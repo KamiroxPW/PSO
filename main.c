@@ -27,11 +27,8 @@ int main(int argc, char **argv)
 
 	Map *map = map_load(f);
 	PSOParams params = {0.5, 1.0, 1.0};
-	if(atoi(config) != -1)
-	{
-		if(load_config(config, &params) != 0)
-			printf("Blad wczytywania pliku konfiguracyjnego, uzywam domyslnych.\n");
-	}
+	if(atoi(config) != 0)
+		load_config(config, &params);
 
 	Swarm *swarm = swarm_init(p_count, map, params);
     

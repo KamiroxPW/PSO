@@ -27,8 +27,10 @@ char* arg(int n, char **v, char *flag)
 int load_config(char *config, PSOParams *params)
 {
 	FILE *f = fopen(config, "r");
-	if (!f) {
+	if(!f)
+	{
 		return -1;
+		printf("Błąd wczytywania konfiguracji\n");
 	}
 	fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2);
 	fclose(f);
