@@ -4,16 +4,16 @@
 #include "utils.h"
 #include "pso.h"
 
-char* flag(int argc, char **argv, char *flaga)
+char* arg(int n, char **v, char *flag)
 {
-	for (int i = 2; i < argc; i++)
+	for (int i = 2; i < n; i++)
 	{
-		if(strcmp(argv[i], flaga) == 0)
+		if(strcmp(v[i], flag) == 0)
 		{
 
-			if (i + 1 < argc)
+			if(i + 1 < n)
 			{
-				return argv[i + 1];
+				return v[i + 1];
 			}
 			else
 			{
@@ -24,9 +24,12 @@ char* flag(int argc, char **argv, char *flaga)
 	return NULL;
 }
 
-int load_config(FILE *f, PSOParams *params)
+int load_config(char *config, PSOParams *params)
 {
-	fopen(f, "r");
+	FILE *f = fopen(config, "r");
+	if (!f) {
+		return -1;
+	}
 	fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2);
 	fclose(f);
 	return 0;

@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include "pso.h"
 
-int load_config(FILE *f, PSOParams *params);
+char* arg(int n, char **v, char *flag);
+
+int load_config(char *config, PSOParams *params);
 
 double random_01();
 

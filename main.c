@@ -10,39 +10,33 @@
 int main(int argc, char **argv)
 {
 	srand(time(NULL));
-
 	if(argc < 2)
 	{
 		printf("Brak argumentow");
 		return 1;
 	}
 	FILE *f = fopen(argv[1], "r");
-	int p_count;
-	int iter;
-	char *config_file;
-	FILE *p = fopen(argv[4], "w");
-	int log = atoi(argv[5]);
-
-	for (int i = 2; i < argc; i++)
-	{
-		if (strcmp(argv[i], "-p") == 0 && i + 1 < argc) p_count = atoi(argv[++i]);
-		else if (strcmp(argv[i], "-i") == 0 && i + 1 < argc) iter = atoi(argv[++i]);
-		else if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) config_file = argv[++i];
-		else if (strcmp(argv[i], "-n") == 0 && i + 1 < argc) log = atoi(argv[++i]);
-	}
+	int p_count = atoi(arg(argc, argv, "-p"));
+	if(p_count == 0)
+		p_count = 30; 
+	int iter = atoi(arg(argc, argv, "-i"));
+	if(iter == 0)
+		iter = 100;
+	char *config = arg(argc, argv, "-c");
+	int log = atoi(arg(argc, argv, "-l") ? arg(argc, argv, "-l") : "0");
 
 	Map *map = map_load(f);
 	PSOParams params = {0.5, 1.0, 1.0};
-	if(p)
+	if(atoi(config) != -1)
 	{
-		if(load_config(p, &params) != 0)
+		if(load_config(config, &params) != 0)
 			printf("Blad wczytywania pliku konfiguracyjnego, uzywam domyslnych.\n");
 	}
 
 	Swarm *swarm = swarm_init(p_count, map, params);
     
 	if(log > 0)
-		log_check(argv[4]);
+		log_check(config);
 
 	printf("Start symulacji: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);
 
@@ -51,7 +45,7 @@ int main(int argc, char **argv)
 		swarm_update(swarm, map);
 
 		if (log > 0 && (j % log == 0))
-			log_save(argv[4], j, swarm);
+			log_save("log", j, swarm);
 	}
 
 	printf("Znaleziony cel: (%.2f, %.2f) z wartoscia %.2f\n",swarm->gBest_x, swarm->gBest_y, swarm->gBest_val);
