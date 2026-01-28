@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <float.h>
 #include <math.h>
 #include "pso.h"
 #include "utils.h"
@@ -10,8 +9,7 @@ Swarm* swarm_init(int count, Map *map, PSOParams params)
 	swarm->particle_count = count;
 	swarm->params = params;
 	swarm->particles = malloc(count * sizeof(Particle));
-
-	swarm->gBest_val = -DBL_MAX;
+	swarm->gBest_val = 0.0;
 
 	for (int i = 0; i < count; i++)
 	{

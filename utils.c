@@ -1,15 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utils.h"
 #include "pso.h"
 
+char* flag(int argc, char **argv, char *flaga)
+{
+	for (int i = 2; i < argc; i++)
+	{
+		if(strcmp(argv[i], flaga) == 0)
+		{
+
+			if (i + 1 < argc)
+			{
+				return argv[i + 1];
+			}
+			else
+			{
+				return NULL; 
+			}
+		}
+	}
+	return NULL;
+}
+
 int load_config(FILE *f, PSOParams *params)
 {
-	if(fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2) != 3)
-	{
-		fclose(f);
-		return 1;
-	}
+	fopen(f, "r");
+	fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2);
+	fclose(f);
 	return 0;
 }
 

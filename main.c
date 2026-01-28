@@ -16,11 +16,20 @@ int main(int argc, char **argv)
 		printf("Brak argumentow");
 		return 1;
 	}
-	FILE *f = fopen(argv[1], "r");	
-	int p_count = atoi(argv[2]);
-	int iter = atoi(argv[3]);
+	FILE *f = fopen(argv[1], "r");
+	int p_count;
+	int iter;
+	char *config_file;
 	FILE *p = fopen(argv[4], "w");
 	int log = atoi(argv[5]);
+
+	for (int i = 2; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-p") == 0 && i + 1 < argc) p_count = atoi(argv[++i]);
+		else if (strcmp(argv[i], "-i") == 0 && i + 1 < argc) iter = atoi(argv[++i]);
+		else if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) config_file = argv[++i];
+		else if (strcmp(argv[i], "-n") == 0 && i + 1 < argc) log = atoi(argv[++i]);
+	}
 
 	Map *map = map_load(f);
 	PSOParams params = {0.5, 1.0, 1.0};
