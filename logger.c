@@ -11,7 +11,7 @@ void log_check(char *fname)
 	fclose(f);
 }
 
-void log(const char *filename, int iteration, Swarm *swarm)
+void log_save(const char *filename, int iteration, Swarm *swarm)
 {
 	FILE *f = fopen(filename, "a");
 	if(!f) return;

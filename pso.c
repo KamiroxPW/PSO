@@ -21,7 +21,7 @@ Swarm* swarm_init(int count, Map *map, PSOParams params)
 		swarm->particles[i].vx = random_range(-1, 1);
 		swarm->particles[i].vy = random_range(-1, 1);
 
-		double val = map_get_value(map, swarm->particles[i].x, swarm->particles[i].y);
+		double val = map_value(map, swarm->particles[i].x, swarm->particles[i].y);
 		swarm->particles[i].fitness = val;
 
 		swarm->particles[i].pBest_x = swarm->particles[i].x;

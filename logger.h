@@ -2,8 +2,8 @@
 #define LOGGER_H
 #include "pso.h"
 
-void logcheck(char *name);
+void log_check(char *name);
 
-void log(const char *filename, int iteration, Swarm *swarm);
+void log_save(const char *filename, int iteration, Swarm *swarm);
 
 #endif
