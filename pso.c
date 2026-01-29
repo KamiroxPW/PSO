@@ -2,7 +2,6 @@
 #include <math.h>
 #include "pso.h"
 #include "utils.h"
-#include <float.h> 
 
 Swarm* swarm_init(int count, Map *map, PSOParams params)
 {
@@ -18,14 +17,14 @@ Swarm* swarm_init(int count, Map *map, PSOParams params)
 		return NULL;
 	}
 
-    swarm->gBest_val = -DBL_MAX; 
+    swarm->gBest_val = -100000; 
 
     for (int i = 0; i < count; i++)
     {
-        swarm->particles[i].x = random_range(0, map->width - 1);
-        swarm->particles[i].y = random_range(0, map->height - 1);
-        swarm->particles[i].vx = random_range(-1, 1);
-        swarm->particles[i].vy = random_range(-1, 1);
+        swarm->particles[i].x = random_range(0, map->width);
+        swarm->particles[i].y = random_range(0, map->height);
+        swarm->particles[i].vx = 0.0;
+        swarm->particles[i].vy = 0.0;
 
         double val = map_value(map, swarm->particles[i].x, swarm->particles[i].y);
         swarm->particles[i].fitness = val;
