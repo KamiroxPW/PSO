@@ -6,7 +6,7 @@
 
 char* arg(int n, char **v, char *flag)
 {
-	for (int i = 2; i < n; i++)
+	for (int i = 1; i < n; i++)
 	{
 		if(strcmp(v[i], flag) == 0)
 		{
@@ -29,11 +29,15 @@ int load_config(char *config, PSOParams *params)
 	FILE *f = fopen(config, "r");
 	if(!f)
 	{
-		return -1;
 		printf("Błąd wczytywania konfiguracji\n");
+		return -1;
 	}
-	fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2);
-	fclose(f);
+	if(fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2) != 3)
+    {
+        fclose(f);
+        return -1;
+    }
+    fclose(f);
 	return 0;
 }
 

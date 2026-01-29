@@ -2,38 +2,45 @@
 #include <math.h>
 #include "pso.h"
 #include "utils.h"
+#include <float.h> 
 
 Swarm* swarm_init(int count, Map *map, PSOParams params)
 {
-	Swarm *swarm = malloc(sizeof(Swarm));
-	swarm->particle_count = count;
-	swarm->params = params;
-	swarm->particles = malloc(count * sizeof(Particle));
-	swarm->gBest_val = 0.0;
-
-	for (int i = 0; i < count; i++)
+    Swarm *swarm = malloc(sizeof(Swarm));
+    if (!swarm) return NULL; 
+    
+    swarm->particle_count = count;
+    swarm->params = params;
+    swarm->particles = malloc(count * sizeof(Particle));
+    if (swarm->particles == NULL) 
 	{
-		swarm->particles[i].x = random_range(0, map->width - 1);
-		swarm->particles[i].y = random_range(0, map->height - 1);
-
-		swarm->particles[i].vx = random_range(-1, 1);
-		swarm->particles[i].vy = random_range(-1, 1);
-
-		double val = map_value(map, swarm->particles[i].x, swarm->particles[i].y);
-		swarm->particles[i].fitness = val;
-
-		swarm->particles[i].pBest_x = swarm->particles[i].x;
-		swarm->particles[i].pBest_y = swarm->particles[i].y;
-		swarm->particles[i].pBest_val = val;
-
-		if(val > swarm->gBest_val)
-		{
-			swarm->gBest_val = val;
-			swarm->gBest_x = swarm->particles[i].x;
-			swarm->gBest_y = swarm->particles[i].y;
-		}
+		free(swarm);
+		return NULL;
 	}
-	return swarm;
+
+    swarm->gBest_val = -DBL_MAX; 
+
+    for (int i = 0; i < count; i++)
+    {
+        swarm->particles[i].x = random_range(0, map->width - 1);
+        swarm->particles[i].y = random_range(0, map->height - 1);
+        swarm->particles[i].vx = random_range(-1, 1);
+        swarm->particles[i].vy = random_range(-1, 1);
+
+        double val = map_value(map, swarm->particles[i].x, swarm->particles[i].y);
+        swarm->particles[i].fitness = val;
+        swarm->particles[i].pBest_x = swarm->particles[i].x;
+        swarm->particles[i].pBest_y = swarm->particles[i].y;
+        swarm->particles[i].pBest_val = val;
+
+        if(val > swarm->gBest_val)
+        {
+            swarm->gBest_val = val;
+            swarm->gBest_x = swarm->particles[i].x;
+            swarm->gBest_y = swarm->particles[i].y;
+        }
+    }
+    return swarm;
 }
 
 void swarm_update(Swarm *swarm, Map *map)
