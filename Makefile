@@ -12,4 +12,4 @@ $(TARGET): $(OBJ)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:
-	del $(OBJ) $(TARGET)
+	del $(OBJ) $(TARGET) log.csv

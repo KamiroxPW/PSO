@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "map.h"
 
 Map* map_load(FILE *f)
@@ -41,11 +40,12 @@ void map_free(Map *map)
 
 double map_value(Map *map, double x, double y)
 {
-	int col = (int)round(x);
-	int row = (int)round(y);
-
-	if (col < 0 || col >= map->width || row < 0 || row >= map->height)
+	if(x >= map->width || y >= map->height || x < 0 || y < 0)
 		return -100.0;
-
-	return map->data[row][col];
+	else
+	{
+		int col = (int)x;
+		int row = (int)y;
+		return map->data[row][col];
+	}
 }

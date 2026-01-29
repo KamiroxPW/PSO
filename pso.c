@@ -6,8 +6,12 @@
 Swarm* swarm_init(int count, Map *map, PSOParams params)
 {
     Swarm *swarm = malloc(sizeof(Swarm));
-    if (!swarm) return NULL; 
-    
+    if (!swarm) 
+	{
+		fprintf(stderr, "Blad alokacji pamieci\n");
+		return NULL; 
+	}
+
     swarm->particle_count = count;
     swarm->params = params;
     swarm->particles = malloc(count * sizeof(Particle));
@@ -17,7 +21,7 @@ Swarm* swarm_init(int count, Map *map, PSOParams params)
 		return NULL;
 	}
 
-    swarm->gBest_val = -100000; 
+    swarm->gBest_val = -100.0; 
 
     for (int i = 0; i < count; i++)
     {

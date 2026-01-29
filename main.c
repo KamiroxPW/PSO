@@ -11,10 +11,11 @@ int main(int argc, char **argv)
 {
 	if(argc < 2)
 	{
-		printf("Uzycie: <map> -p particle_count -i iterations -c config_file -l log_interval\n");
+		printf("Uzycie: <map> -p particle_count -i iterations -c config_file -n log_interval\n");
 		return 1;
 	}
 	FILE *f = fopen(argv[1], "r");
+	Map *map = map_load(f);
 	int p_count = atoi(arg(argc, argv, "-p"));
 	if(p_count == 0)
 		p_count = 30; 
@@ -22,17 +23,17 @@ int main(int argc, char **argv)
 	if(iter == 0)
 		iter = 100;
 	char *config = arg(argc, argv, "-c");
-	int log = atoi(arg(argc, argv, "-l"));
-	Map *map = map_load(f);
+	int log = atoi(arg(argc, argv, "-n"));
 	PSOParams params = {0.5, 1.0, 1.0};
-	if(atoi(config) != 0)
+	if(config != NULL)
+	{
+		printf("Wczytywanie konfiguracji z pliku\n");
 		load_config(config, &params);
-
-	Swarm *swarm = swarm_init(p_count, map, params);
+	}
 
 	printf("Start: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);
-
 	srand(time(NULL));
+	Swarm *swarm = swarm_init(p_count, map, params);
 	remove("log.csv");
 	if(log > 0 && log < iter)
 		log_init("log.csv");
