@@ -29,7 +29,6 @@ int load_config(char *config, PSOParams *params)
 	FILE *f = fopen(config, "r");
 	if(!f)
 	{
-		printf("Błąd wczytywania konfiguracji\n");
 		return -1;
 	}
 	if(fscanf(f, "%lf %lf %lf", &params->w, &params->c1, &params->c2) != 3)

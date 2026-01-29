@@ -16,6 +16,11 @@ int main(int argc, char **argv)
 	}
 	FILE *f = fopen(argv[1], "r");
 	Map *map = map_load(f);
+	if(map == NULL)
+	{
+		printf("Blad wczytywania mapy\n");
+		return 1;
+	}
 	int p_count = atoi(arg(argc, argv, "-p"));
 	if(p_count == 0)
 		p_count = 30; 
@@ -28,7 +33,13 @@ int main(int argc, char **argv)
 	if(config != NULL)
 	{
 		printf("Wczytywanie konfiguracji z pliku\n");
-		load_config(config, &params);
+		if(load_config(config, &params) == -1)
+		{
+			printf("Blad wczytywania konfiguracji\n");
+			map_free(map);
+			fclose(f);
+			return 1;
+		}
 	}
 
 	printf("Start: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);

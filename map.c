@@ -18,9 +18,24 @@ Map* map_load(FILE *f)
 	}
 
 	map->data = malloc(map->height * sizeof(double*));
+	if(!map->data)
+	{
+		free(map);
+		return NULL;
+	}
+
 	for(int i = 0; i < map->height; i++)
 	{
 		map->data[i] = malloc(map->width * sizeof(double));
+		if(!map->data[i])
+		{
+			for(int j = 0; j < i; j++)
+				free(map->data[j]);
+			free(map->data);
+			free(map);
+			return NULL;
+		}
+		
 		for(int j = 0; j < map->width; j++)
 		{
 			fscanf(f, "%lf", &map->data[i][j]);
