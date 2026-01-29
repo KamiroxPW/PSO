@@ -6,7 +6,7 @@
 
 char* arg(int n, char **v, char *flag)
 {
-	for (int i = 1; i < n; i++)
+	for (int i = 2; i < n; i++)
 	{
 		if(strcmp(v[i], flag) == 0)
 		{
