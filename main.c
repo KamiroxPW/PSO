@@ -19,6 +19,7 @@ int main(int argc, char **argv)
 	if(map == NULL)
 	{
 		printf("Blad wczytywania mapy\n");
+		fclose(f);
 		return 1;
 	}
 	int p_count = atoi(arg(argc, argv, "-p"));

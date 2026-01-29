@@ -21,7 +21,7 @@ Swarm* swarm_init(int count, Map *map, PSOParams params)
 		return NULL;
 	}
 
-    swarm->gBest_val = -100.0; 
+    swarm->gBest_val = -100000.0; 
 
     for (int i = 0; i < count; i++)
     {
