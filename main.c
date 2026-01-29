@@ -9,7 +9,6 @@
 
 int main(int argc, char **argv)
 {
-	srand(time(NULL));
 	if(argc < 2)
 	{
 		printf("Uzycie: <map> -p particle_count -i iterations -c config_file -l log_interval\n");
@@ -23,26 +22,26 @@ int main(int argc, char **argv)
 	if(iter == 0)
 		iter = 100;
 	char *config = arg(argc, argv, "-c");
-	int log = atoi(arg(argc, argv, "-l") ? arg(argc, argv, "-l") : "0");
-
+	int log = atoi(arg(argc, argv, "-l"));
 	Map *map = map_load(f);
 	PSOParams params = {0.5, 1.0, 1.0};
 	if(atoi(config) != 0)
 		load_config(config, &params);
 
 	Swarm *swarm = swarm_init(p_count, map, params);
-    
-	if(log > 0)
-		log_check(config);
 
-	printf("Start symulacji: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);
+	printf("Start: Map %dx%d, Particles %d, Iterations %d\n",map->width, map->height, p_count, iter);
 
-	for(int j = 0; j < iter; j++)
+	srand(time(NULL));
+	remove("log.csv");
+	if(log > 0 && log < iter)
+		log_init("log.csv");
+	for(int i = 0; i < iter; i++)
 	{
 		swarm_update(swarm, map);
 
-		if (log > 0 && (j % log == 0))
-			log_save("log", j, swarm);
+		if(log > 0 && (i % log == 0))
+			log_save("log.csv", i, swarm);
 	}
 
 	printf("Znaleziony cel: (%.2f, %.2f) z wartoscia %.2f\n",swarm->gBest_x, swarm->gBest_y, swarm->gBest_val);
